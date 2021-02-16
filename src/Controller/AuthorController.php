@@ -14,18 +14,6 @@ use App\Form\Type\AuthorType;
  */
 class AuthorController extends AbstractController
 {
-    private function submitForm($form, Request $request, $author): Response
-    {
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $task = $form->getData();
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($task);
-            $entityManager->flush();
-            return $this->redirectToRoute('author_index');
-        }
-    }
-
     /**
      * @Route("/", name="author_index", methods={"GET", "HEAD"})
      */
@@ -58,9 +46,9 @@ class AuthorController extends AbstractController
         $form = $this->createForm(AuthorType::class, $author);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $task = $form->getData();
+            $author = $form->getData();
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($task);
+            $entityManager->persist($author);
             $entityManager->flush();
             return $this->redirectToRoute('author_index');
         }
@@ -77,7 +65,6 @@ class AuthorController extends AbstractController
         $form = $this->createForm(AuthorType::class, $author);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $task = $form->getData();
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->flush();
             return $this->redirectToRoute('author_index');

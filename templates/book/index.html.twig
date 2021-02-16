@@ -4,14 +4,41 @@
 
 {% block body %}
     <div id="wrapper">
+        <form action="{{ path('book_create') }}" method="POST">
+            <button type="submit">Add book</button>
+        </form>
         <div id="container">
             {% for book in books %}
                 <div>
+                        {% if book.image is not null %}
+                            <img src="{{ book.image }}" alt="Image from external resource" />
+                        {% else %}
+                            <img src="{{ asset('images/default-book-cover.png') }}" alt="Default image" />
+                        {% endif %}
                     {{ book.name }}
+                    <form action="{{ path('book_edit', {id: book.id}) }}" method="POST">
+                        <button type="submit">Edit</button>
+                    </form>
+                    <form action="{{ path('book_delete', {id: book.id}) }}" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit">Delete</button>
+                    </form>
+                    {% for author in book.authors %}
+                        {{ author.name }}
+                    {% endfor %}
                 </div>
             {% else %}
                 No books have been found.
             {% endfor %}
         </div>
     </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        img { 
+            width: 200px; 
+            height: 300px; 
+        }
+    </style>
 {% endblock %}
