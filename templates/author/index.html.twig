@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Authors{% endblock %}
+
+{% block body %}
+    <div id="wrapper">
+        <form action="{{ path('author_create') }}" method="POST">
+            <button type="submit">Add author</button>
+        </form>
+        <div id="container">
+            {% for author in authors %}
+                <div>
+                    {{ author.name }}
+                    <form action="{{ path('author_edit', {id: author.id}) }}" method="POST">
+                        <button type="submit">Edit</button>
+                    </form>
+                    <form action="{{ path('author_delete', {id: author.id}) }}" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit">Delete</button>
+                    </form>
+                </div>
+            {% else %}
+                No authors have been found.
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

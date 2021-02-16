@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Books{% endblock %}
+
+{% block body %}
+    <div id="wrapper">
+        <div id="container">
+            {% for book in books %}
+                <div>
+                    {{ book.name }}
+                </div>
+            {% else %}
+                No books have been found.
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

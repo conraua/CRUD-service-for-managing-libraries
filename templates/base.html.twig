@@ -14,6 +14,74 @@
         {% endblock %}
     </head>
     <body>
+        <div class="navbar_container">
+            <ul class="navbar_list">
+                <li class="navbar_item"><a href="{{ path('book_index') }}">Books</a></li>
+                <li class="navbar_item"><a href="{{ path('author_index') }}">Authors</a></li>
+            </ul>
+        </div>
         {% block body %}{% endblock %}
     </body>
 </html>
+
+<style>
+    body { background: #F5F5F5; font: 18px/1.5 sans-serif; }
+    h1, h2 { line-height: 1.2; margin: 0 0 .5em; }
+    h1 { font-size: 36px; }
+    h2 { font-size: 21px; margin-bottom: 1em; }
+    p { margin: 0 0 1em 0; }
+    a { color: #0000F0; }
+    a:hover { text-decoration: none; }
+    code { background: #F5F5F5; max-width: 100px; padding: 2px 6px; word-wrap: break-word; }
+    #wrapper { background: #FFF; margin: 1em auto; max-width: 1200px; width: 95%; }
+    #container { padding: 2em; }
+    #welcome, #status { margin-bottom: 2em; }
+    #welcome h1 span { display: block; font-size: 75%; }
+    #icon-status, #icon-book { float: left; height: 64px; margin-right: 1em; margin-top: -4px; width: 64px; }
+    #icon-book { display: none; }
+
+    @media (min-width: 768px) {
+        #wrapper { width: 80%; margin: 2em auto; }
+        #icon-book { display: inline-block; }
+        #status a, #next a { display: block; }
+
+        @-webkit-keyframes fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
+        @keyframes fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
+        .sf-toolbar { opacity: 0; -webkit-animation: fade-in 1s .2s forwards; animation: fade-in 1s .2s forwards;}
+    }
+
+    .navbar_container {
+
+    }
+
+    .navbar_list {
+        position: sticky;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+    }
+
+    .navbar_item {
+        float: left;
+        border-right: 1px solid #bbb;
+    }
+
+    .navbar_item:last-child {
+        border-right: none;
+    }
+
+    .navbar_item a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+
+    .navbar_item a:hover {
+        background-color: #111;
+    }
+</style>
+
