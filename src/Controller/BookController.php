@@ -28,6 +28,32 @@ class BookController extends AbstractController
     }
 
     /**
+     * @Route("/native", name="book_native_query", methods={"GET", "HEAD"})
+     */
+    public function nativeQuery(): Response
+    {
+        $books = $this->getDoctrine()
+            ->getRepository(Book::class)
+            ->findByNativeSQL();
+        return $this->render('book/native_query.html.twig', [
+            'books' => $books
+        ]);
+    }
+
+    /**
+     * @Route("/doctrine", name="book_doctrine_query", methods={"GET", "HEAD"})
+     */
+    public function doctrineQuery(): Response
+    {
+        $books = $this->getDoctrine()
+            ->getRepository(Book::class)
+            ->findByDoctrineORM();
+        return $this->render('book/doctrine_query.html.twig', [
+            'books' => $books
+        ]);
+    }
+
+    /**
      * @Route("/{id}", name="book_show", methods={"GET", "HEAD"})
      */
     public function show(Book $book): Response

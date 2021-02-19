@@ -8,7 +8,7 @@
             <button type="submit">Add book</button>
         </form>
         {% for book in books %}
-            <div>
+            <div class="card">
                 <a href="{{ path('book_show', {id: book.id}) }}">
                     {% if book.image is not null %}
                         <img src="{{ book.image }}" alt="Image from external resource" />
@@ -68,6 +68,11 @@
 
         .book_description {
             display: inline-block;
+        }
+
+        .card {
+            display: block;
+            margin-bottom: 340px;
         }
     </style>
 {% endblock %}

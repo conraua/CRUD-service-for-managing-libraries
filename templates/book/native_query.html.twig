@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Books{% endblock %}
+
+{% block body %}
+    <div id="wrapper">
+        {% for book in books %}
+            <div class="card">
+                <a href="{{ path('book_show', {id: book.id}) }}">
+                    Название: {{ book.name }}
+                    Количество соавторов: {{ book.count }}
+                </a>
+            </div>
+        {% else %}
+            No books have been found.
+        {% endfor %}
+    </div>
+{% endblock %}
