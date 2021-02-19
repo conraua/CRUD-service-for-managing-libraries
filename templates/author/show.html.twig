@@ -7,6 +7,17 @@
         <div id="container">
             <div>
                 {{ author.name }}
+                <ul>
+                {% for book in author.books %}
+                    <li>
+                        <a href="{{ path('book_show', {id: book.id}) }}">
+                            {{ book.name }}
+                        </a>
+                    </li>
+                {% else %}
+                    No books written by this author
+                {% endfor %}
+                </ul>
             </div>
         </div>
     </div>

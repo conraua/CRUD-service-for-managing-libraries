@@ -58,11 +58,13 @@ class BookController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="book_edit", methods={"POST"})
+     * @Route("/{id}", name="book_edit", methods={"PATCH"})
      */
     public function edit(Request $request, Book $book): Response
     {
-        $form = $this->createForm(BookType::class, $book);
+        $form = $this->createForm(BookType::class, $book, [
+            'method' => 'PATCH'
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();

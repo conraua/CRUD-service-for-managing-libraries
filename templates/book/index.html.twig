@@ -7,38 +7,67 @@
         <form action="{{ path('book_create') }}" method="POST">
             <button type="submit">Add book</button>
         </form>
-        <div id="container">
-            {% for book in books %}
-                <div>
-                        {% if book.image is not null %}
-                            <img src="{{ book.image }}" alt="Image from external resource" />
-                        {% else %}
-                            <img src="{{ asset('images/default-book-cover.png') }}" alt="Default image" />
-                        {% endif %}
-                    {{ book.name }}
-                    <form action="{{ path('book_edit', {id: book.id}) }}" method="POST">
-                        <button type="submit">Edit</button>
-                    </form>
-                    <form action="{{ path('book_delete', {id: book.id}) }}" method="POST">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit">Delete</button>
-                    </form>
-                    {% for author in book.authors %}
+        {% for book in books %}
+            <div>
+                <a href="{{ path('book_show', {id: book.id}) }}">
+                    {% if book.image is not null %}
+                        <img src="{{ book.image }}" alt="Image from external resource" />
+                    {% else %}
+                        <img src="{{ asset('images/default-book-cover.png') }}" alt="Default image" />
+                    {% endif %}
+                    <div class="book_name">
+                        {{ book.name }}
+                    </div>
+                    </br>
+                    <div class="book_description">
+                        {{ book.description }}
+                    </div>
+                </a>
+                <form action="{{ path('book_edit', {id: book.id}) }}" method="POST">
+                    <input type="hidden" name="_method" value="PATCH">
+                    <button type="submit">Edit</button>
+                </form>
+                <form action="{{ path('book_delete', {id: book.id}) }}" method="POST">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit">Delete</button>
+                </form>
+                {% for author in book.authors %}
+                    <a href="{{ path('author_show', {id: author.id}) }}">
                         {{ author.name }}
-                    {% endfor %}
-                </div>
-            {% else %}
-                No books have been found.
-            {% endfor %}
-        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            No books have been found.
+        {% endfor %}
     </div>
 {% endblock %}
 
 {% block stylesheets %}
     <style>
-        img { 
-            width: 200px; 
-            height: 300px; 
+        img {
+            display: inline-block;
+            border-style: solid;
+            border-color: black;
+            border-width: 1px;
+            width: 210px; 
+            height: 340px;
+            margin-right: auto;
+            margin-top: 5px;
+            float: left;
+        }
+
+        a {
+            text-decoration: none;
+            color: #000000;
+        }
+
+        .book_name {
+            display: inline-block;
+        }
+
+        .book_description {
+            display: inline-block;
         }
     </style>
 {% endblock %}
