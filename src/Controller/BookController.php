@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\Type\BookType;
+use App\Form\Type\FilterType;
 
 /**
  * @Route("/book")
@@ -17,13 +18,21 @@ class BookController extends AbstractController
     /**
      * @Route("/", name="book_index", methods={"GET", "HEAD"})
      */
-    public function index(): Response
+    public function index(Request $request): Response
     {
-        $books = $this->getDoctrine()
-            ->getRepository(Book::class)
-            ->findAll();
+        $bookRepository = $this->getDoctrine()->getRepository(Book::class);
+        $form = $this->createForm(FilterType::class);
+        $books = $bookRepository->findAll();
+        if ($request->query->get('filter')) {
+            $queryParameters = array_filter($request->query->get('filter'));
+            unset($queryParameters['_token']);
+            if (!empty($queryParameters)) {
+                $books = $bookRepository->filterBooksByParameters($queryParameters);
+            }
+        }
         return $this->render('book/index.html.twig', [
-            'books' => $books
+            'books' => $books,
+            'form' => $form->createView()
         ]);
     }
 

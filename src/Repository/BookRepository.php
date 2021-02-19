@@ -60,4 +60,40 @@ class BookRepository extends ServiceEntityRepository
             ->getQuery();
         return $query->getResult();
     }
+
+    /**
+     * @return Book[]
+     */
+    public function filterBooksByParameters($parameters): array {
+        $queryBuilder = $this->createQueryBuilder('book');
+        $yearFrom = -1;
+        foreach ($parameters as $key => $value) {
+            if ($key === 'authors') {
+                $queryBuilder
+                    ->leftJoin('book.authors', 'authors')
+                    ->andWhere('authors IN (:authors)')
+                    ->setParameter(':authors', $value);
+            } else {
+                if ($key == "yearFrom") {
+                    $yearFrom = $value;
+                } else if($key == "yearTo") {
+                    if ($yearFrom !== -1 && $yearFrom <= $value) {
+                        $queryBuilder
+                            ->andWhere('book.year >= :from')
+                            ->andWhere('book.year <= :to')
+                            ->setParameters(array('from' =>  $yearFrom,
+                                                  'to' => $value)
+                            );
+                    }
+                } else {
+                    $queryBuilder
+                        ->andWhere("book.$key LIKE :$key")
+                        ->setParameter($key, "$value%");
+                }
+            }
+
+        }
+        $query = $queryBuilder->getQuery();
+        return $query->execute();
+    }
 }

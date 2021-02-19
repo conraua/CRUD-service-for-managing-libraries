@@ -7,6 +7,47 @@
         <form action="{{ path('book_create') }}" method="POST">
             <button type="submit">Add book</button>
         </form>
+        <form action="{{ path('book_index') }}" method="GET">
+            {{ form_start(form) }}
+            <div>
+                <div>
+                    <span>Name</span>
+                </div>
+                {{ form_widget(form.name) }}
+            </div>
+            <div>
+                <div>
+                    <span>Year: from</span>
+                </div>
+                {{ form_widget(form.yearFrom) }}
+            </div>
+             <div>
+                <div>
+                    <span>Year: to</span>
+                </div>
+                {{ form_widget(form.yearTo) }}
+            </div>
+            <div>
+                <div>
+                    <span>Image URL</span>
+                </div>
+                {{ form_widget(form.image) }}
+            </div>
+            <div>
+                <div>
+                    <span>Description</span>
+                </div>
+                {{ form_widget(form.description) }}
+            </div>
+            <div>
+                <div>
+                    <label>Authors</label>
+                </div>
+                {{ form_widget(form.authors) }}
+            </div>
+            {{ form_row(form.submit) }}
+            {{ form_end(form) }}
+        </form>
         {% for book in books %}
             <div class="card">
                 <a href="{{ path('book_show', {id: book.id}) }}">
