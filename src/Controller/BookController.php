@@ -54,7 +54,7 @@ class BookController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="book_show", methods={"GET", "HEAD"})
+     * @Route("/{id}", name="book_show", methods={"GET", "HEAD"}, requirements={"id"="\d+"})
      */
     public function show(Book $book): Response
     {
@@ -84,7 +84,7 @@ class BookController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="book_edit", methods={"PATCH"})
+     * @Route("/{id}", name="book_edit", methods={"PATCH"}, requirements={"id"="\d+"})
      */
     public function edit(Request $request, Book $book): Response
     {
@@ -104,7 +104,7 @@ class BookController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="book_delete", methods={"DELETE"})
+     * @Route("/{id}", name="book_delete", methods={"DELETE"}, requirements={"id"="\d+"})
      */
     public function delete(Book $book): Response
     {

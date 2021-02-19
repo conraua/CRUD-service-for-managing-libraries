@@ -28,7 +28,7 @@ class AuthorController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="author_show", methods={"GET", "HEAD"})
+     * @Route("/{id}", name="author_show", methods={"GET", "HEAD"}, requirements={"id"="\d+"})
      */
     public function show(Author $author): Response
     {
@@ -58,7 +58,7 @@ class AuthorController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="author_edit", methods={"POST"})
+     * @Route("/{id}", name="author_edit", methods={"POST"}, requirements={"id"="\d+"})
      */
     public function edit(Request $request, Author $author): Response
     {
@@ -76,7 +76,7 @@ class AuthorController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="author_delete", methods={"DELETE"})
+     * @Route("/{id}", name="author_delete", methods={"DELETE"}, requirements={"id"="\d+"})
      */
     public function delete(Author $author): Response
     {
