@@ -25,10 +25,16 @@ class FilterType extends AbstractType
                 'required' => false
             ])
             ->add('yearFrom', IntegerType::class, [
-                'required' => false
+                'required' => false,
+                'attr' => [
+                    'min' => 0
+                ]
             ])
             ->add('yearTo', IntegerType::class, [
-                'required' => false
+                'required' => false,
+                'attr' => [
+                    'min' => 0
+                ]
             ])
             ->add('image', UrlType::class, [
                     'required' => false

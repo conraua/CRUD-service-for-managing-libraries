@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Form\Type\BookType;
 use App\Form\Type\FilterType;
+use App\Entity\Author;
+use Exception;
 
 /**
  * @Route("/book")
@@ -65,10 +67,22 @@ class BookController extends AbstractController
     /**
      * @Route("/{id}", name="book_show", methods={"GET", "HEAD"}, requirements={"id"="\d+"})
      */
-    public function show(Book $book): Response
+    public function show(Request $request, Book $book): Response
     {
+        $form = $this->createForm(BookType::class, $book, [
+            'method' => 'PATCH'
+        ]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $book = $form->getData();
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($book);
+            $entityManager->flush();
+            return $this->redirectToRoute('book_show');
+        }
         return $this->render('book/show.html.twig', [
-            'book' => $book 
+            'book' => $book,
+            'form' => $form->createView() 
         ]);
     }
 
@@ -110,6 +124,53 @@ class BookController extends AbstractController
             'book' => $book,
             'form' => $form->createView(),
         ]);
+    }
+
+    /**
+     * @Route("/{id}/inline", name="book_edit_inline", methods={"PATCH"}, requirements={"id"="\d+"})
+     */
+    public function editInline(Request $request, Book $book): Response
+    {
+        $data = json_decode($request->getContent(), true);
+        $request->request->replace(is_array($data) ? $data : array());
+        if ($request->request->get('name') !== null) {
+            if ($request->request->get('name') === "") {
+                throw new Exception("Name can't be empty");
+            } else {
+                $book->setName($request->request->get('name'));
+            }
+        }
+        if ($request->request->get('description') !== null) {
+            if ($request->request->get('description') === "") {
+                throw new Exception("Description can't be empty");
+            } else {
+                $book->setDescription($request->request->get('description'));
+            }
+        }
+        if ($request->request->get('year') !== null) {
+            if ($request->request->get('year') === "") {
+                throw new Exception("Year can't be empty");
+            } else {
+                $book->setYear($request->request->get('year'));
+            }
+        }
+        if ($request->request->get('image') !== $book->getImage()) {
+            $book->setImage($request->request->get('image'));
+        }
+        if (count($request->request->get('authors')) > 0) {
+            foreach($book->getAuthors() as $author) {
+                $book->removeAuthor($author);
+            }
+            foreach($request->request->get('authors') as $author_id) {
+                $author = $this->getDoctrine()->getRepository(Author::class)->find($author_id);
+                $book->addAuthor($author);
+            }
+        } else {
+            throw new Exception("At least one author required");
+        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->flush();
+        return new Response("Updated successfully!");
     }
 
     /**

@@ -10,7 +10,9 @@
         <div id="container">
             {% for author in authors %}
                 <div>
-                    {{ author.name }}
+                    <a href="{{ path('author_show', {id: author.id}) }}">
+                        {{ author.name }}
+                    </a>
                     <form action="{{ path('author_edit', {id: author.id}) }}" method="POST">
                         <button type="submit">Edit</button>
                     </form>

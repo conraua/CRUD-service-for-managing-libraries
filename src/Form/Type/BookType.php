@@ -19,7 +19,11 @@ class BookType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('description', TextareaType::class)
-            ->add('year', IntegerType::class)
+            ->add('year', IntegerType::class, [
+                'attr' => [
+                    'min' => 0
+                ]
+            ])
             ->add('image', UrlType::class, [
                     'required' => false
                 ])

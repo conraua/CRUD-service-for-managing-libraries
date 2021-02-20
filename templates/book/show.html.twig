@@ -5,10 +5,108 @@
 {% block body %}
     <div id="wrapper">
         <div id="container">
+        <form action="{{ path('book_show', {id: book.id}) }}" method="GET">
+            {{ form_start(form) }}
+            <div>
+                <div>
+                    <span>Name</span>
+                </div>
+                {{ form_widget(form.name, { 
+                    'attr': {
+                            'id': 'name',
+                            'onblur': 'send()'
+                        } 
+                    }) }}
+            </div>
+            <div>
+                <div>
+                    <span>Year: from</span>
+                </div>
+                {{ form_widget(form.year, { 
+                    'attr': {
+                            'id': 'year',
+                            'onblur': 'send()'
+                        } 
+                    }) }}
+            </div>
+            <div>
+                <div>
+                    <span>Image URL</span>
+                </div>
+                {{ form_widget(form.image, { 
+                    'attr': {
+                            'id': 'image',
+                            'onblur': 'send()'
+                        } 
+                    }) }}
+            </div>
+            <div>
+                <div>
+                    <span>Description</span>
+                </div>
+                {{ form_widget(form.description, { 
+                    'attr': {
+                            'id': 'description',
+                            'onblur': 'send()'
+                        } 
+                    }) }}
+            </div>
+            <div>
+                <div>
+                    <label>Authors</label>
+                </div>
+                {{ form_widget(form.authors, {
+                    'attr': {
+                        'id': 'authors',
+                        'onblur': 'send()'
+                    }
+                }) }}
+            </div>
+            {{ form_row(form.save, {
+                'attr': {
+                    'disabled': 'true',
+                    'hidden': 'true'
+                }
+            }) }}
+            {{ form_end(form) }}
+        </form>
             <div>
                 {{ book.name }}
                 {{ book.year }}
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    var send = function() 
+    {
+        var xhr = new XMLHttpRequest();
+        var inputName = document.getElementById('book_name').value;
+        var inputDescription = document.getElementById('book_description').value;
+        var inputYear = document.getElementById('book_year').value;
+        var inputImage = document.getElementById('book_image').value;
+        var inputAuthors = [...document.getElementById('book_authors').options].filter((x) => x.selected).map((x)=>x.value);
+        var newName = (inputName !== "{{book.name}}") ? inputName : null;
+        var newDescription = (inputDescription !== "{{book.description}}") ? inputDescription : null;
+        var newYear = (inputYear !== "{{book.year}}") ? inputYear : null;
+        var newImage = (inputImage !== "") ? inputImage : null;
+        xhr.onreadystatechange = function () {
+        if (xhr.readyState === 4) {
+            console.log(xhr.status);
+            console.log(xhr.responseText);
+        }};
+        xhr.open("PATCH", '{{path('book_edit_inline', {id: book.id})}}');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+        xhr.send(JSON.stringify({
+                name: newName,
+                description: newDescription,
+                year: newYear,
+                image: newImage,
+                authors: inputAuthors
+            }));
+    }
+</script>
 {% endblock %}
