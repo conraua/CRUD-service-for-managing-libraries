@@ -8,8 +8,8 @@
             <div class="card">
                 <a href="{{ path('book_show', {id: book.id}) }}">
                     Название: {{ book.name }}
-                    Количество соавторов: {{ book.authors|length }}
                 </a>
+                Количество соавторов: {{ book.authors|length }}
             </div>
         {% else %}
             No books have been found.

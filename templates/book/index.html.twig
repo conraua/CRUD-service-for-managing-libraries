@@ -4,9 +4,11 @@
 
 {% block body %}
     <div id="wrapper">
-        <form action="{{ path('book_create') }}" method="POST">
-            <button type="submit">Add book</button>
-        </form>
+        {% if is_granted('ROLE_ADMIN') %}
+            <form action="{{ path('book_create') }}" method="POST">
+                <button type="submit">Add book</button>
+            </form>
+        {% endif %}    
         <form action="{{ path('book_index') }}" method="GET">
             {{ form_start(form) }}
             <div>
@@ -57,24 +59,30 @@
                         <img src="{{ asset('images/default-book-cover.png') }}" alt="Default image" />
                     {% endif %}
                     <div class="book_name">
+                        Title:
                         {{ book.name }}
                     </div>
                     </br>
                     <div class="book_description">
+                        Description: 
                         {{ book.description }}
                     </div>
                 </a>
-                <form action="{{ path('book_edit', {id: book.id}) }}" method="POST">
-                    <input type="hidden" name="_method" value="PATCH">
-                    <button type="submit">Edit</button>
-                </form>
-                <form action="{{ path('book_delete', {id: book.id}) }}" method="POST">
-                    <input type="hidden" name="_method" value="DELETE">
-                    <button type="submit">Delete</button>
-                </form>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <form action="{{ path('book_edit', {id: book.id}) }}" method="POST">
+                        <input type="hidden" name="_method" value="PATCH">
+                        <button type="submit">Edit</button>
+                    </form>
+                    <form action="{{ path('book_delete', {id: book.id}) }}" method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit">Delete</button>
+                    </form>
+                {% endif %}
+                </br>
+                Written by:
                 {% for author in book.authors %}
                     <a href="{{ path('author_show', {id: author.id}) }}">
-                        {{ author.name }}
+                        {{ author.name }}.
                     </a>
                 {% endfor %}
             </div>

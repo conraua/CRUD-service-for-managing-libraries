@@ -4,12 +4,13 @@
 
 {% block body %}
 <div class="example-wrapper">
-    <form action="{{ path('generate_authors') }}" method="GET">
-        <button type="submit">Generate authors</button>
-    </form>
-    <form action="{{ path('generate_books') }}" method="GET">
-        <button type="submit">Generate books</button>
-    </form>
-    <a href="/admin">Link to sonata admin dashboard</a>
+    {% if is_granted('ROLE_ADMIN') %}
+        <form action="{{ path('generate_authors') }}" method="GET">
+            <button type="submit">Generate authors</button>
+        </form>
+        <form action="{{ path('generate_books') }}" method="GET">
+            <button type="submit">Generate books</button>
+        </form>
+    {% endif %}
 </div>
 {% endblock %}

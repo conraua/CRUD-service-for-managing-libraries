@@ -4,22 +4,26 @@
 
 {% block body %}
     <div id="wrapper">
-        <form action="{{ path('author_create') }}" method="POST">
-            <button type="submit">Add author</button>
-        </form>
+        {% if is_granted('ROLE_ADMIN') %}
+            <form action="{{ path('author_create') }}" method="POST">
+                <button type="submit">Add author</button>
+            </form>
+        {% endif %}
         <div id="container">
             {% for author in authors %}
                 <div>
                     <a href="{{ path('author_show', {id: author.id}) }}">
                         {{ author.name }}
                     </a>
-                    <form action="{{ path('author_edit', {id: author.id}) }}" method="POST">
-                        <button type="submit">Edit</button>
-                    </form>
-                    <form action="{{ path('author_delete', {id: author.id}) }}" method="POST">
-                        <input type="hidden" name="_method" value="DELETE">
-                        <button type="submit">Delete</button>
-                    </form>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <form action="{{ path('author_edit', {id: author.id}) }}" method="POST">
+                            <button type="submit">Edit</button>
+                        </form>
+                        <form action="{{ path('author_delete', {id: author.id}) }}" method="POST">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <button type="submit">Delete</button>
+                        </form>
+                    {% endif %}
                 </div>
             {% else %}
                 No authors have been found.

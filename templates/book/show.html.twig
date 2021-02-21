@@ -5,6 +5,7 @@
 {% block body %}
     <div id="wrapper">
         <div id="container">
+        {% if is_granted('ROLE_ADMIN') %}
             {{ form_start(form) }}
             <div class="info">
                 <div>
@@ -75,6 +76,35 @@
                     }) }}
             </div>
             {{ form_end(form) }}
+        {% else %}
+            {% if book.image is not null %}
+                <img src="{{ book.image }}" alt="Image from external resource" />
+            {% else %}
+                <img src="{{ asset('images/default-book-cover.png') }}" alt="Default image" />
+            {% endif %}
+            <span>
+                Title:
+                {{ book.name }}
+            </span>
+            <div>
+                Description:
+                {{ book.description }}
+            </div>
+            <span>
+                Published in:
+                {{ book.year }}
+            </span>
+            <div>
+                Written by:
+                {% for author in book.authors %}
+                    <span>
+                        <a href="{{ path('author_show', {id: author.id}) }}">
+                            {{ author.name }}.
+                        </a>
+                    </span>
+                {% endfor %}
+            </div>
+        {% endif %}
         </div>
     </div>
 {% endblock %}

@@ -16,13 +16,20 @@
     <body>
         <div class="navbar_container">
             <ul class="navbar_list">
-                <li class="navbar_item right"><a href="/login">Log in</a></li>
+                {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <li class="navbar_item right"><a href="/login">Log in</a></li>
+                {% else %}
+                    <li class="navbar_item right"><a href="/logout">Log out</a></li>
+                {% endif %}
                 <li class="navbar_item right"><a href="/register">Register</a></li>
                 <li class="navbar_item"><a href="{{ path('index') }}">Home</a></li>
                 <li class="navbar_item"><a href="{{ path('book_index') }}">Books</a></li>
                 <li class="navbar_item"><a href="{{ path('author_index') }}">Authors</a></li>
                 <li class="navbar_item"><a href="{{ path('book_native_query') }}">Native SQL query</a></li>
                 <li class="navbar_item"><a href="{{ path('book_doctrine_query') }}">Doctrine ORM query</a></li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="navbar_item"><a href="/admin">Sonata admin</a></li>
+                {% endif %}
             </ul>
         </div>
         {% block body %}{% endblock %}
