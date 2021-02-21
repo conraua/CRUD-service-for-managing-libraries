@@ -39,7 +39,7 @@ class DefaultController extends AbstractController
             $book->setYear(intval(substr($json['results'][0]['registered']['date'], 0, 4)));
             $book->setImage($json['results'][0]['picture']['medium']);
             $authorsCount = array_rand($authors) % 5;
-            for ($i = 0; $i < $authorsCount; $i++) {
+            for ($j = 0; $j < $authorsCount; $j++) {
                 $book->addAuthor($authors[array_rand($authors)]);
             }
             $entityManager->persist($book);
