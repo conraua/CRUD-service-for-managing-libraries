@@ -16,6 +16,8 @@
     <body>
         <div class="navbar_container">
             <ul class="navbar_list">
+                <li class="navbar_item right"><a href="/login">Log in</a></li>
+                <li class="navbar_item right"><a href="/register">Register</a></li>
                 <li class="navbar_item"><a href="{{ path('index') }}">Home</a></li>
                 <li class="navbar_item"><a href="{{ path('book_index') }}">Books</a></li>
                 <li class="navbar_item"><a href="{{ path('author_index') }}">Authors</a></li>
@@ -85,6 +87,11 @@
 
     .navbar_item a:hover {
         background-color: #111;
+    }
+
+    .right {
+        float: right;
+        background-color: green;
     }
 </style>
 
